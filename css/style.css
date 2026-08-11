@@ -768,7 +768,8 @@ h1, h2, h3, h4 {
 .role-item .role-org { color: var(--text-faint); font-size: 0.85rem; }
 .role-item .role-date { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-faint); white-space: nowrap; }
 
-.award-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+.award-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 8px; }
+@media (max-width: 560px) { .award-grid { grid-template-columns: 1fr; } }
 .award-item {
   display: flex;
   align-items: center;
@@ -822,6 +823,44 @@ h1, h2, h3, h4 {
 .contact-card .icon { color: var(--blue); margin-bottom: 14px; }
 .contact-card .label { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 6px; }
 .contact-card .value { font-size: 0.88rem; font-weight: 600; word-break: break-word; }
+
+.contact-form {
+  text-align: left;
+  max-width: 520px;
+  margin: 40px auto 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+.contact-form .form-row { margin-bottom: 18px; }
+.contact-form label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+.contact-form input:focus, .contact-form textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.contact-form .btn { width: 100%; }
+.form-status { margin: 14px 0 0; font-size: 0.85rem; color: var(--text-dim); min-height: 1.2em; }
+.form-status.is-error { color: #e8735f; }
 
 /* ---------------------------------------------------------
    Footer

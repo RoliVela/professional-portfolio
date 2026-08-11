@@ -249,6 +249,7 @@
               <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
             </div>
           </div>
+          <img src="assets/img/fifadex-screenshot.jpg" alt="FIFADEX app screenshot — 'Discover soccer concepts inside every clip'" class="pc-thumb" loading="lazy" width="800" height="458" />
           <h3>FIFADEX</h3>
           <p>A multistage AI pipeline on FastAPI using Docling for video transcription and IBM Granite (via Watsonx.ai) to cross-reference commentary, mapped into a gamified learning dashboard. Presented at the IBM SkillsBuild AI Builders Challenge as part of a 5-person team.</p>
           <div class="tag-row">
@@ -538,6 +539,23 @@
         </a>
       </div>
 
+      <form id="contactForm" class="contact-form reveal" novalidate>
+        <div class="form-row">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="from_name" type="text" required autocomplete="name" />
+        </div>
+        <div class="form-row">
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="from_email" type="email" required autocomplete="email" />
+        </div>
+        <div class="form-row">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+        <p id="cf-status" class="form-status" role="status" aria-live="polite"></p>
+      </form>
+
       <div class="hero-cta reveal" style="justify-content:center; margin-top:44px; margin-bottom:0;">
         <a href="assets/resume/Roli_Vela_Resume.pdf" class="btn btn-primary" target="_blank" rel="noopener">Download Résumé</a>
       </div>
@@ -567,5 +585,6 @@
 </script>
 <script type="module" src="js/main.js"></script>
 <script type="module" src="js/viewer.js"></script>
+<script type="module" src="js/contact.js"></script>
 </body>
 </html>
