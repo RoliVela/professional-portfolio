@@ -65,7 +65,12 @@ function initViewer(container) {
 
       if (loadingEl) loadingEl.remove();
     },
-    undefined,
+    (xhr) => {
+      if (loadingEl && xhr.total) {
+        const pct = Math.round((xhr.loaded / xhr.total) * 100);
+        loadingEl.textContent = `Loading model… ${pct}%`;
+      }
+    },
     (err) => {
       if (loadingEl) loadingEl.textContent = "Model unavailable";
       console.error("STL load failed:", modelUrl, err);
