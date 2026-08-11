@@ -6,29 +6,40 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 const stlLoader = new STLLoader();
 
 // ── Shared renderer ──────────────────────────────────────────────
-// One WebGLRenderer / one canvas / one rAF loop for all viewers.
-// Avoids browser WebGL context limits that break multi-viewer pages.
+// One WebGLRenderer / one canvas inside the cad-section / one loop.
+// Avoids browser WebGL context limits.
 
 let sharedRenderer = null;
 const activeViewers = [];
 let frameId = null;
+let sharedCanvas = null;
 
 function getRenderer() {
   if (sharedRenderer) return sharedRenderer;
 
-  const canvas = document.createElement("canvas");
-  canvas.style.cssText = "position:fixed;inset:0;z-index:0;pointer-events:none;";
-  canvas.setAttribute("data-role", "cad-shared-canvas");
-  document.body.prepend(canvas);
+  const cadSection = document.querySelector(".cad-section");
+  if (!cadSection) return null;
 
-  sharedRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  sharedCanvas = document.createElement("canvas");
+  sharedCanvas.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;";
+  sharedCanvas.setAttribute("data-role", "cad-shared-canvas");
+  cadSection.insertBefore(sharedCanvas, cadSection.firstChild);
+
+  sharedRenderer = new THREE.WebGLRenderer({ canvas: sharedCanvas, antialias: true, alpha: true });
   sharedRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   sharedRenderer.setClearColor(0x000000, 0);
   sharedRenderer.setScissorTest(true);
 
-  window.addEventListener("resize", () => {
-    sharedRenderer.setSize(window.innerWidth, window.innerHeight);
-  });
+  const updateCanvasSize = () => {
+    const rect = cadSection.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    if (w > 0 && h > 0) {
+      sharedRenderer.setSize(w, h);
+    }
+  };
+  updateCanvasSize();
+  window.addEventListener("resize", updateCanvasSize);
 
   return sharedRenderer;
 }
@@ -38,7 +49,6 @@ function startLoop() {
   function loop() {
     frameId = requestAnimationFrame(loop);
 
-    // Clean up viewers removed from DOM
     for (let i = activeViewers.length - 1; i >= 0; i--) {
       if (!document.body.contains(activeViewers[i].container)) {
         activeViewers.splice(i, 1);
@@ -50,19 +60,26 @@ function startLoop() {
       return;
     }
 
-    sharedRenderer.setSize(window.innerWidth, window.innerHeight);
+    const canvasRect = sharedCanvas.getBoundingClientRect();
+    if (canvasRect.width === 0 || canvasRect.height === 0) return;
+
+    sharedRenderer.setSize(canvasRect.width, canvasRect.height);
+
+    const dpr = sharedRenderer.getPixelRatio();
 
     for (const v of activeViewers) {
       const rect = v.container.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
-      if (w <= 0 || h <= 0 || rect.bottom < 0 || rect.top > window.innerHeight) continue;
+      if (w <= 0 || h <= 0) continue;
 
-      const dpr = sharedRenderer.getPixelRatio();
-      const sx = rect.left * dpr;
-      const sy = (window.innerHeight - rect.bottom) * dpr;
+      // Coordinates relative to the shared canvas
+      const sx = (rect.left - canvasRect.left) * dpr;
+      const sy = (canvasRect.bottom - rect.bottom) * dpr; // flip Y
       const sw = w * dpr;
       const sh = h * dpr;
+
+      if (sw <= 0 || sh <= 0) continue;
 
       sharedRenderer.setViewport(sx, sy, sw, sh);
       sharedRenderer.setScissor(sx, sy, sw, sh);
@@ -80,7 +97,7 @@ function startLoop() {
 // ── Init a single viewer ────────────────────────────────────────
 
 function initViewer(container) {
-  getRenderer();
+  if (!getRenderer()) return;
 
   const modelUrl = container.dataset.model;
   const color = container.dataset.color || "#4fd6ff";
@@ -90,7 +107,6 @@ function initViewer(container) {
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
   camera.position.set(0, 0, 10);
 
-  // Lights
   const key = new THREE.DirectionalLight(0xffffff, 2.2);
   key.position.set(4, 6, 8);
   scene.add(key);
@@ -99,7 +115,6 @@ function initViewer(container) {
   scene.add(fill);
   scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
-  // Controls bound to the viewer container (receives scroll / drag events)
   const controls = new OrbitControls(camera, container);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
