@@ -138,6 +138,14 @@ h1, h2, h3, h4 {
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 /* ---------------------------------------------------------
+   Animated counters
+--------------------------------------------------------- */
+.counter { display: inline; }
+@media (prefers-reduced-motion: reduce) {
+  .counter { animation: none; }
+}
+
+/* ---------------------------------------------------------
    Scroll progress bar
 --------------------------------------------------------- */
 .scroll-bar {

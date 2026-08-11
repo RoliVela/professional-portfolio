@@ -52,6 +52,42 @@ if (prefersReducedMotion) {
 }
 
 /* ---------------------------------------------------------
+   Animated number counters
+--------------------------------------------------------- */
+const counters = document.querySelectorAll(".counter");
+if (counters.length && !prefersReducedMotion) {
+  const counterIO = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const prefix = el.dataset.prefix || "";
+        const suffix = el.dataset.suffix || "";
+        const decimals = parseInt(el.dataset.decimals) || 0;
+        const duration = 1200;
+        const start = performance.now();
+
+        function tick(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = target * eased;
+          el.textContent = prefix + current.toFixed(decimals) + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          }
+        }
+        requestAnimationFrame(tick);
+        counterIO.unobserve(el);
+      });
+    },
+    { threshold: 0.5 }
+  );
+  counters.forEach((el) => counterIO.observe(el));
+}
+
+/* ---------------------------------------------------------
    Hero + contact canvas: animated blueprint grid
    Lightweight 2D canvas — a field of drifting nodes connected
    by faint lines when close, over a subtle grid. No dependency,
