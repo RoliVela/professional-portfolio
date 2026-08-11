@@ -591,7 +591,7 @@ h1, h2, h3, h4 {
 /* ---------------------------------------------------------
    CAD / Engineering
 --------------------------------------------------------- */
-.cad-section { background: var(--bg-elevated); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; }
+.cad-section { background: var(--bg-elevated); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
 .cad-grid {
   display: grid;
@@ -602,6 +602,7 @@ h1, h2, h3, h4 {
 @media (max-width: 980px) { .cad-grid { grid-template-columns: 1fr; } }
 
 .cad-card {
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -616,10 +617,11 @@ h1, h2, h3, h4 {
 .cad-viewer {
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: transparent;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(79,214,255,0.10), transparent 60%),
+    #0d1119;
   position: relative;
   cursor: grab;
-  overflow: hidden;
 }
 .cad-viewer:active { cursor: grabbing; }
 .cad-viewer canvas { display: block; width: 100%; height: 100%; }
@@ -643,7 +645,7 @@ h1, h2, h3, h4 {
   letter-spacing: 0.08em;
 }
 
-.cad-body { padding: 22px 24px 26px; background: var(--surface); }
+.cad-body { padding: 22px 24px 26px; }
 .cad-body .tl-date { color: var(--gold); }
 .cad-body h3 { font-size: 1.1rem; margin-bottom: 10px; }
 .cad-body p { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 16px; }

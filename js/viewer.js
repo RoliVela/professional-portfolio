@@ -3,109 +3,25 @@ import { STLLoader } from "three/addons/loaders/STLLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const stlLoader = new STLLoader();
-
-// ── Shared renderer ──────────────────────────────────────────────
-// One WebGLRenderer / one canvas inside the cad-section / one loop.
-// Avoids browser WebGL context limits.
-
-let sharedRenderer = null;
-const activeViewers = [];
-let frameId = null;
-let sharedCanvas = null;
-
-function getRenderer() {
-  if (sharedRenderer) return sharedRenderer;
-
-  const cadSection = document.querySelector(".cad-section");
-  if (!cadSection) return null;
-
-  sharedCanvas = document.createElement("canvas");
-  sharedCanvas.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;";
-  sharedCanvas.setAttribute("data-role", "cad-shared-canvas");
-  cadSection.insertBefore(sharedCanvas, cadSection.firstChild);
-
-  sharedRenderer = new THREE.WebGLRenderer({ canvas: sharedCanvas, antialias: true, alpha: true });
-  sharedRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  sharedRenderer.setClearColor(0x000000, 0);
-  sharedRenderer.setScissorTest(true);
-
-  const updateCanvasSize = () => {
-    const rect = cadSection.getBoundingClientRect();
-    const w = rect.width;
-    const h = rect.height;
-    if (w > 0 && h > 0) {
-      sharedRenderer.setSize(w, h);
-    }
-  };
-  updateCanvasSize();
-  window.addEventListener("resize", updateCanvasSize);
-
-  return sharedRenderer;
-}
-
-function startLoop() {
-  if (frameId) return;
-  function loop() {
-    frameId = requestAnimationFrame(loop);
-
-    for (let i = activeViewers.length - 1; i >= 0; i--) {
-      if (!document.body.contains(activeViewers[i].container)) {
-        activeViewers.splice(i, 1);
-      }
-    }
-    if (activeViewers.length === 0) {
-      cancelAnimationFrame(frameId);
-      frameId = null;
-      return;
-    }
-
-    const canvasRect = sharedCanvas.getBoundingClientRect();
-    if (canvasRect.width === 0 || canvasRect.height === 0) return;
-
-    sharedRenderer.setSize(canvasRect.width, canvasRect.height);
-
-    const dpr = sharedRenderer.getPixelRatio();
-
-    for (const v of activeViewers) {
-      const rect = v.container.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
-      if (w <= 0 || h <= 0) continue;
-
-      // Coordinates relative to the shared canvas
-      const sx = (rect.left - canvasRect.left) * dpr;
-      const sy = (canvasRect.bottom - rect.bottom) * dpr; // flip Y
-      const sw = w * dpr;
-      const sh = h * dpr;
-
-      if (sw <= 0 || sh <= 0) continue;
-
-      sharedRenderer.setViewport(sx, sy, sw, sh);
-      sharedRenderer.setScissor(sx, sy, sw, sh);
-
-      v.camera.aspect = w / h;
-      v.camera.updateProjectionMatrix();
-
-      v.controls.update();
-      sharedRenderer.render(v.scene, v.camera);
-    }
-  }
-  loop();
-}
-
-// ── Init a single viewer ────────────────────────────────────────
+const loader = new STLLoader();
 
 function initViewer(container) {
-  if (!getRenderer()) return;
-
   const modelUrl = container.dataset.model;
   const color = container.dataset.color || "#4fd6ff";
   const loadingEl = container.querySelector(".cad-loading");
 
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
+
+  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
   camera.position.set(0, 0, 10);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  container.appendChild(renderer.domElement);
 
   const key = new THREE.DirectionalLight(0xffffff, 2.2);
   key.position.set(4, 6, 8);
@@ -115,7 +31,7 @@ function initViewer(container) {
   scene.add(fill);
   scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
-  const controls = new OrbitControls(camera, container);
+  const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enableZoom = true;
@@ -124,10 +40,12 @@ function initViewer(container) {
   controls.autoRotate = !prefersReducedMotion;
   controls.autoRotateSpeed = 1.4;
 
+  let mesh;
+
   const rotateX = parseFloat(container.dataset.rotateX) || -Math.PI / 2.4;
   const scaleFactor = parseFloat(container.dataset.scale) || 1;
 
-  stlLoader.load(
+  loader.load(
     modelUrl,
     (geometry) => {
       geometry.center();
@@ -142,13 +60,15 @@ function initViewer(container) {
         metalness: 0.35,
         roughness: 0.45,
       });
-      scene.add(new THREE.Mesh(geometry, material));
+      mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
 
       if (loadingEl) loadingEl.remove();
     },
     (xhr) => {
       if (loadingEl && xhr.total) {
-        loadingEl.textContent = `Loading model… ${Math.round((xhr.loaded / xhr.total) * 100)}%`;
+        const pct = Math.round((xhr.loaded / xhr.total) * 100);
+        loadingEl.textContent = `Loading model… ${pct}%`;
       }
     },
     (err) => {
@@ -157,18 +77,31 @@ function initViewer(container) {
     }
   );
 
-  const viewer = { container, scene, camera, controls };
-  activeViewers.push(viewer);
-  startLoop();
+  let running = true;
+  function animate() {
+    if (!running) return;
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
 
-  return () => {
-    const idx = activeViewers.indexOf(viewer);
-    if (idx >= 0) activeViewers.splice(idx, 1);
-  };
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }, 150);
+  });
+
+  return () => { running = false; };
 }
 
-// ── Lazy-init on scroll ─────────────────────────────────────────
-
+const viewers = document.querySelectorAll(".cad-viewer");
 const io = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -180,5 +113,4 @@ const io = new IntersectionObserver(
   },
   { threshold: 0.2 }
 );
-
-document.querySelectorAll(".cad-viewer").forEach((v) => io.observe(v));
+viewers.forEach((v) => io.observe(v));
