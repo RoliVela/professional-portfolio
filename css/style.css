@@ -505,6 +505,15 @@ h1, h2, h3, h4 {
   padding-left: 18px;
   position: relative;
 }
+.tl-card .tl-thumb {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+}
+
 .tl-card li::before {
   content: "";
   position: absolute; left: 0; top: 8px;
@@ -561,6 +570,15 @@ h1, h2, h3, h4 {
 }
 .project-card .pc-links a:hover, .project-card .pc-links a:focus-visible { color: var(--gold); border-color: var(--gold); }
 
+.project-card .pc-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+
 .project-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
 .project-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; flex-grow: 1; }
 
@@ -581,9 +599,10 @@ h1, h2, h3, h4 {
 
 .cad-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
+@media (min-width: 1200px) { .cad-grid { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 980px) { .cad-grid { grid-template-columns: 1fr; } }
 
 .cad-card {
@@ -598,8 +617,6 @@ h1, h2, h3, h4 {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px -8px rgba(79,214,255,0.1);
 }
-
-.cad-viewer {
   width: 100%;
   aspect-ratio: 4 / 3;
   background:
@@ -634,6 +651,26 @@ h1, h2, h3, h4 {
 .cad-body .tl-date { color: var(--gold); }
 .cad-body h3 { font-size: 1.1rem; margin-bottom: 10px; }
 .cad-body p { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 16px; }
+
+.cad-feature-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+  text-decoration: none;
+  margin-top: 2px;
+  transition: color 0.2s;
+}
+.cad-feature-link:hover { color: var(--text); }
+
+.cad-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
 
 .cad-more {
   margin-top: 44px;
