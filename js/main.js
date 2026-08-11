@@ -72,19 +72,19 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
     canvas.height = height * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const count = Math.round((width * height) / 22000 * density);
+    const count = Math.round((width * height) / 9500 * density);
     nodes = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.25,
-      r: Math.random() * 1.6 + 0.6,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.8 + 0.8,
     }));
   }
 
   function drawGrid() {
-    const step = 64;
-    ctx.strokeStyle = "rgba(255,255,255,0.035)";
+    const step = 56;
+    ctx.strokeStyle = "rgba(255,255,255,0.05)";
     ctx.lineWidth = 1;
     for (let x = 0; x < width; x += step) {
       ctx.beginPath();
@@ -118,7 +118,7 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
         const dx = a.x - b.x, dy = a.y - b.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < maxDist) {
-          ctx.strokeStyle = lineColor.replace("ALPHA", String(0.14 * (1 - dist / maxDist)));
+          ctx.strokeStyle = lineColor.replace("ALPHA", String(0.22 * (1 - dist / maxDist)));
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
@@ -148,13 +148,13 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
 }
 
 initFieldCanvas(document.getElementById("hero-canvas"), {
-  nodeColor: "rgba(232, 182, 79, 0.55)",
+  nodeColor: "rgba(232, 182, 79, 0.6)",
   lineColor: "rgba(79, 214, 255, ALPHA)",
-  density: 1,
+  density: 1.3,
 });
 
 initFieldCanvas(document.getElementById("contact-canvas"), {
-  nodeColor: "rgba(79, 214, 255, 0.45)",
+  nodeColor: "rgba(79, 214, 255, 0.5)",
   lineColor: "rgba(232, 182, 79, ALPHA)",
-  density: 0.7,
+  density: 1.0,
 });
