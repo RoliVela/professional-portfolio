@@ -42,15 +42,18 @@ function initViewer(container) {
 
   let mesh;
 
+  const rotateX = parseFloat(container.dataset.rotateX) || -Math.PI / 2.4;
+  const scaleFactor = parseFloat(container.dataset.scale) || 1;
+
   loader.load(
     modelUrl,
     (geometry) => {
       geometry.center();
       geometry.computeBoundingSphere();
       const radius = geometry.boundingSphere ? geometry.boundingSphere.radius : 1;
-      const scale = 3.4 / (radius || 1);
+      const scale = (3.4 / (radius || 1)) * scaleFactor;
       geometry.scale(scale, scale, scale);
-      geometry.rotateX(-Math.PI / 2.4);
+      geometry.rotateX(rotateX);
 
       const material = new THREE.MeshStandardMaterial({
         color,

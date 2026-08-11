@@ -9,7 +9,7 @@
 <meta property="og:title" content="Roli Vela — Software &amp; Hardware Engineer" />
 <meta property="og:description" content="Computer Engineering &amp; AI student at Northwestern University building AI-driven software and precision CAD hardware." />
 <meta property="og:type" content="website" />
-<meta property="og:image" content="https://rolivela.github.io/professional-portfolio/assets/img/headshot.jpg" />
+<meta property="og:image" content="https://rolivela.github.io/professional-portfolio/assets/img/swe-roli.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="theme-color" content="#0a0d12" />
 
@@ -47,7 +47,7 @@
 
   <!-- ============================= HERO ============================= -->
   <header class="hero">
-    <canvas id="hero-canvas"></canvas>
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <div class="container hero-inner">
       <div class="hero-kicker"><span class="dot"></span>OPEN TO SOFTWARE &amp; FINTECH ROLES · 2029</div>
       <h1>Hi, I’m <span class="accent">Roli.</span><br />I build software and machines.</h1>
@@ -76,8 +76,8 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-photo reveal">
-          <img src="assets/img/headshot.jpg" alt="Portrait of Roli Vela" width="767" height="900" loading="lazy" />
-          <span class="about-photo-tag">Evanston, IL</span>
+          <img src="assets/img/swe-roli.png" alt="Roli at his standing desk — code on screen, SF skyline through the window, engineering drawings on the wall" width="768" height="1024" loading="lazy" />
+          <span class="about-photo-tag">San Francisco, CA</span>
         </div>
         <div>
           <div class="eyebrow reveal">Introduction</div>
@@ -93,7 +93,7 @@
             <p>
               Outside of coursework, I bootstrapped a multi-channel e-commerce business to <strong>$65K in
               revenue</strong>, interned on backend infrastructure and AI integration at an auto dealership
-              group, and design competition-rocket fin geometry for Northwestern Rocketry. I’m chasing roles
+              group, and machined competition-rocket components for Northwestern Rocketry. I’m chasing roles
               where engineering rigor meets financial stakes — I was selected for
               <strong>Jane Street’s Focus program</strong> and the <strong>Greenwood FinTech Academy
               Fellowship</strong>.
@@ -312,6 +312,19 @@
           </div>
         </div>
 
+        <div class="project-card reveal">
+          <div class="pc-top">
+            <div class="pc-icon">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 7h10"/><path d="M7 10h6"/></svg>
+            </div>
+          </div>
+          <h3>Xpyre</h3>
+          <p>Mobile-first tool that decodes non-standardized manufacturer expiration-date codes into plain-language dates for beverage-warehouse staff. Camera capture plus a manufacturer-code database, with AI-assisted pattern matching for unrecognized formats. Co-founder; currently leading the web build-out and early business operations. In active pilot with a regional distributor.</p>
+          <div class="tag-row">
+            <span class="tag">Founder</span><span class="tag">AI</span><span class="tag">Product</span><span class="tag">Full-Stack</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -326,15 +339,15 @@
       <div class="cad-grid">
 
         <div class="cad-card reveal">
-          <div class="cad-viewer" data-model="assets/models/nustars-fin.stl" data-color="#4fd6ff">
+          <div class="cad-viewer" data-model="assets/models/nustars-thrust-plate.stl" data-color="#4fd6ff">
             <div class="cad-loading">Loading model…</div>
             <div class="cad-hint">Drag · Scroll</div>
           </div>
           <div class="cad-body">
             <span class="tl-date">Sept 2025 — Present</span>
-            <h3>Northwestern Rocketry — Fin Design</h3>
-            <p>Tapered, swept fin geometry designed in Onshape to optimize aerodynamic stability and minimize wave drag for a competition rocket targeting a 12,000-foot apogee. Manufactured in aluminum and carbon fiber via CNC.</p>
-            <div class="tag-row"><span class="tag">Onshape</span><span class="tag">CNC</span><span class="tag">Aerodynamics</span></div>
+            <h3>Northwestern Rocketry — Thrust Plate Machining</h3>
+            <p>CNC machining setup for the rocket's thrust plate, designed in Onshape and manufactured from aluminum on a Tormach mill. The plate transfers motor thrust to the airframe and must hold tight tolerances under high load.</p>
+            <div class="tag-row"><span class="tag">Onshape</span><span class="tag">CNC</span><span class="tag">Machining</span></div>
           </div>
         </div>
 
@@ -352,15 +365,15 @@
         </div>
 
         <div class="cad-card reveal">
-          <div class="cad-viewer" data-model="assets/models/excel-fin.stl" data-color="#4fd6ff">
+          <div class="cad-viewer" data-model="assets/models/excel-assembly.stl" data-color="#4fd6ff" data-rotate-x="-1.1" data-scale="0.85">
             <div class="cad-loading">Loading model…</div>
             <div class="cad-hint">Drag · Scroll</div>
           </div>
           <div class="cad-body">
             <span class="tl-date">2025</span>
             <h3>EXCEL McCormick Robot Proposition</h3>
-            <p>Component geometry designed for a robot proposition built through Northwestern’s EXCEL McCormick summer engineering-access program.</p>
-            <div class="tag-row"><span class="tag">Onshape</span><span class="tag">Prototyping</span></div>
+            <p>Full multi-part assembly exported from Onshape — designed and modeled through Northwestern’s EXCEL McCormick summer engineering-access program.</p>
+            <div class="tag-row"><span class="tag">Onshape</span><span class="tag">Assembly</span><span class="tag">Prototyping</span></div>
           </div>
         </div>
 
@@ -452,7 +465,7 @@
 
   <!-- ============================= CONTACT ============================= -->
   <section id="contact" class="contact-section">
-    <canvas id="contact-canvas"></canvas>
+    <canvas id="contact-canvas" aria-hidden="true"></canvas>
     <div class="container contact-inner">
       <div class="eyebrow reveal" style="justify-content:center;">Get In Touch</div>
       <h2 class="section-title reveal">Let’s build something.</h2>
