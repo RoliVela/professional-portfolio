@@ -510,8 +510,6 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-sm);
   margin-bottom: 18px;
   border: 1px solid var(--border);
-  object-fit: cover;
-  aspect-ratio: 16 / 9;
 }
 
 .tl-card li::before {
@@ -572,8 +570,6 @@ h1, h2, h3, h4 {
 
 .project-card .pc-thumb {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
   border-radius: var(--radius-sm);
   margin-bottom: 16px;
   border: 1px solid var(--border);
@@ -665,8 +661,6 @@ h1, h2, h3, h4 {
 
 .cad-photo {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
   border-radius: var(--radius-sm);
   margin-bottom: 12px;
   border: 1px solid var(--border);
