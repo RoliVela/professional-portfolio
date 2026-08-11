@@ -108,6 +108,7 @@ section { position: relative; padding: 140px 0; }
   width: 22px;
   height: 1px;
   background: var(--gold);
+  display: none;
 }
 
 h1, h2, h3, h4 {
@@ -280,20 +281,11 @@ h1, h2, h3, h4 {
 
 .hero-kicker {
   font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--blue);
-  margin-bottom: 22px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.hero-kicker .dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--blue);
-  box-shadow: 0 0 12px 2px var(--blue);
+  color: var(--text-faint);
+  margin-bottom: 24px;
 }
 
 .hero h1 {
@@ -324,30 +316,7 @@ h1, h2, h3, h4 {
 .hero-meta span { display: flex; align-items: center; gap: 8px; }
 .hero-meta .sep { width: 4px; height: 4px; background: var(--text-faint); border-radius: 50%; }
 
-.scroll-cue {
-  position: absolute;
-  bottom: 40px;
-  left: 24px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.scroll-cue .line {
-  width: 1px; height: 42px;
-  background: linear-gradient(var(--text-faint), transparent);
-  animation: scrollcue 2.2s ease-in-out infinite;
-}
-@keyframes scrollcue {
-  0%, 100% { transform: scaleY(1); opacity: 0.5; }
-  50% { transform: scaleY(0.6); opacity: 1; }
-}
-@media (max-width: 720px) { .scroll-cue { display: none; } }
+
 
 /* ---------------------------------------------------------
    About
@@ -425,41 +394,48 @@ h1, h2, h3, h4 {
 .focus-card p { color: var(--text-faint); font-size: 0.86rem; }
 
 /* ---------------------------------------------------------
-   Skills marquee
+   Skills — Bill of Materials grid
 --------------------------------------------------------- */
-.skills-section { padding: 80px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.marquee {
-  display: flex;
-  gap: 14px;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+.skills-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
-.marquee-track {
-  display: flex;
-  gap: 14px;
-  flex-shrink: 0;
-  animation: marquee 32s linear infinite;
+
+.bom-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
+@media (max-width: 760px) { .bom-grid { grid-template-columns: 1fr; } }
+
+.bom-block {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.86rem;
-  color: var(--text-dim);
-  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  padding: 20px 22px;
 }
-.chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+
+.bom-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--blue);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bom-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+.bom-items span {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
 
 /* ---------------------------------------------------------
    Timeline
@@ -734,6 +710,7 @@ h1, h2, h3, h4 {
 .contact-inner { position: relative; z-index: 2; text-align: center; max-width: 720px; margin: 0 auto; }
 .contact-inner .section-title { margin: 0 auto 20px; }
 .contact-inner .section-lede { margin-left: auto; margin-right: auto; }
+.contact-inner .eyebrow { display: flex; justify-content: center; }
 
 .contact-grid {
   display: grid;

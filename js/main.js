@@ -45,14 +45,6 @@ if (prefersReducedMotion) {
 }
 
 /* ---------------------------------------------------------
-   Marquee: duplicate chip set for a seamless loop
---------------------------------------------------------- */
-const track = document.getElementById("marqueeTrack");
-if (track) {
-  track.innerHTML += track.innerHTML;
-}
-
-/* ---------------------------------------------------------
    Hero + contact canvas: animated blueprint grid
    Lightweight 2D canvas — a field of drifting nodes connected
    by faint lines when close, over a subtle grid. No dependency,
