@@ -563,13 +563,41 @@ h1, h2, h3, h4 {
   padding: 28px;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.3s, transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  transform-style: preserve-3d;
+  perspective: 800px;
+  transition: border-color 0.3s, box-shadow 0.4s, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.project-card:hover {
+.project-card.is-tilting {
   border-color: var(--blue);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px -8px rgba(79,214,255,0.08);
 }
+.project-card.is-tilting .project-card-glow {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transition: border-color 0.3s, transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px -8px rgba(79,214,255,0.08);
+  }
+}
+
+.project-card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(79, 214, 255, 0.12),
+    transparent 60%
+  );
+  z-index: 0;
+}
+.project-card > * { position: relative; z-index: 1; }
 .project-card .pc-top {
   display: flex;
   align-items: flex-start;

@@ -88,6 +88,43 @@ if (counters.length && !prefersReducedMotion) {
 }
 
 /* ---------------------------------------------------------
+   Parallax 3D tilt on project cards
+--------------------------------------------------------- */
+const tiltCards = document.querySelectorAll(".project-card");
+if (tiltCards.length && !prefersReducedMotion) {
+  const TILT_MAX = 8;
+
+  tiltCards.forEach((card) => {
+    const glow = card.querySelector(".project-card-glow");
+
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      const rotateY = (x - 0.5) * TILT_MAX;
+      const rotateX = -(y - 0.5) * TILT_MAX;
+
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02,1.02,1.02)`;
+      card.classList.add("is-tilting");
+
+      if (glow) {
+        glow.style.setProperty("--mx", `${x * 100}%`);
+        glow.style.setProperty("--my", `${y * 100}%`);
+      }
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
+      card.classList.remove("is-tilting");
+      if (glow) {
+        glow.style.setProperty("--mx", "50%");
+        glow.style.setProperty("--my", "50%");
+      }
+    });
+  });
+}
+
+/* ---------------------------------------------------------
    Hero + contact canvas: animated blueprint grid
    Lightweight 2D canvas — a field of drifting nodes connected
    by faint lines when close, over a subtle grid. No dependency,
