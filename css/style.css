@@ -138,6 +138,24 @@ h1, h2, h3, h4 {
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 /* ---------------------------------------------------------
+   Scroll progress bar
+--------------------------------------------------------- */
+.scroll-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  z-index: 200;
+  background: linear-gradient(90deg, var(--gold), #f2cd82);
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px rgba(232, 182, 79, 0.5);
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-bar { display: none; }
+}
+
+/* ---------------------------------------------------------
    Nav
 --------------------------------------------------------- */
 .nav {

@@ -5,8 +5,15 @@ const nav = document.getElementById("nav");
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 
+const scrollBar = document.getElementById("scrollBar");
+
 window.addEventListener("scroll", () => {
   nav.classList.toggle("is-scrolled", window.scrollY > 20);
+  if (scrollBar) {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    scrollBar.style.width = docHeight > 0 ? `${(scrollTop / docHeight) * 100}%` : "0%";
+  }
 }, { passive: true });
 
 navToggle.addEventListener("click", () => {
