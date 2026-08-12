@@ -21,8 +21,8 @@ navToggle.addEventListener("click", () => {
   navToggle.setAttribute("aria-expanded", String(open));
 });
 
-navLinks.querySelectorAll("a").forEach((a) => {
-  a.addEventListener("click", () => {
+navLinks.querySelectorAll("a, button").forEach((el) => {
+  el.addEventListener("click", () => {
     navLinks.classList.remove("is-open");
     navToggle.setAttribute("aria-expanded", "false");
   });
@@ -262,3 +262,67 @@ initFieldCanvas(document.getElementById("hero-canvas"), {
   lineColor: "rgba(79, 214, 255, ALPHA)",
   density: 1.3,
 });
+
+/* ---------------------------------------------------------
+   "AI" chatbot (gag feature — always replies "I don't know.")
+--------------------------------------------------------- */
+const chatbotToggle = document.getElementById("chatbotToggle");
+const chatWidget = document.getElementById("chatWidget");
+const chatClose = document.getElementById("chatClose");
+const chatMessages = document.getElementById("chatMessages");
+const chatForm = document.getElementById("chatForm");
+const chatInput = document.getElementById("chatInput");
+
+if (chatbotToggle && chatWidget) {
+  let greeted = false;
+
+  function addChatMessage(text, sender) {
+    const el = document.createElement("div");
+    el.className = `chat-msg chat-msg-${sender}`;
+    el.textContent = text;
+    chatMessages.appendChild(el);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function openChat() {
+    chatWidget.classList.add("is-open");
+    chatWidget.setAttribute("aria-hidden", "false");
+    if (!greeted) {
+      addChatMessage(
+        "Hi, this is AI Roli — built to answer any questions you may have instantly, exactly like Roli would. If you have any questions, feel free to ask!",
+        "bot"
+      );
+      greeted = true;
+    }
+    chatInput.focus();
+  }
+
+  function closeChat() {
+    chatWidget.classList.remove("is-open");
+    chatWidget.setAttribute("aria-hidden", "true");
+  }
+
+  chatbotToggle.addEventListener("click", () => {
+    chatWidget.classList.contains("is-open") ? closeChat() : openChat();
+  });
+  chatClose.addEventListener("click", closeChat);
+
+  chatForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if (!text) return;
+    addChatMessage(text, "user");
+    chatInput.value = "";
+
+    const typingEl = document.createElement("div");
+    typingEl.className = "chat-msg chat-msg-bot chat-typing";
+    typingEl.innerHTML = "<span></span><span></span><span></span>";
+    chatMessages.appendChild(typingEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    setTimeout(() => {
+      typingEl.remove();
+      addChatMessage("I don't know.", "bot");
+    }, 1100 + Math.random() * 700);
+  });
+}

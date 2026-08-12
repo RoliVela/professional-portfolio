@@ -38,11 +38,8 @@
     <span></span><span></span><span></span>
   </button>
   <div class="nav-links" id="navLinks">
-    <a href="#about">About</a>
-    <a href="#experience">Experience</a>
-    <a href="#projects">Projects</a>
-    <a href="#engineering">Engineering</a>
     <a href="#contact">Contact</a>
+    <button type="button" class="btn btn-ghost btn-sm" id="chatbotToggle">AI Chatbot</button>
     <a href="assets/resume/Roli_Vela_Resume.pdf" class="btn btn-primary btn-sm" target="_blank" rel="noopener">Résumé</a>
   </div>
 </nav>
@@ -245,6 +242,11 @@
           <div class="pc-top">
             <div class="pc-icon">
               <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+            </div>
+            <div class="pc-links">
+              <a href="https://ai-inside-the-match.vercel.app/" target="_blank" rel="noopener" aria-label="Live site">
+                <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
             </div>
           </div>
           <img src="assets/img/fifadex-screenshot.jpg" alt="FIFADEX app screenshot — 'Discover soccer concepts inside every clip'" class="pc-thumb" loading="lazy" />
@@ -572,6 +574,23 @@
     </div>
   </div>
 </footer>
+
+<div class="chat-widget" id="chatWidget" aria-hidden="true">
+  <div class="chat-header">
+    <span class="chat-header-title">
+      <span class="chat-status-dot"></span>
+      AI Roli
+    </span>
+    <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <form class="chat-input-row" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Ask me anything…" autocomplete="off" aria-label="Message" />
+    <button type="submit" class="chat-send" aria-label="Send message">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </form>
+</div>
 
 <script type="importmap">
 {
