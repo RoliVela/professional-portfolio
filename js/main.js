@@ -251,14 +251,8 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
   document.addEventListener("pointerleave", () => { pointer = null; });
 }
 
-initFieldCanvas(document.getElementById("hero-canvas"), {
+initFieldCanvas(document.getElementById("bg-canvas"), {
   nodeColor: "rgba(232, 182, 79, 0.6)",
   lineColor: "rgba(79, 214, 255, ALPHA)",
   density: 1.3,
-});
-
-initFieldCanvas(document.getElementById("contact-canvas"), {
-  nodeColor: "rgba(79, 214, 255, 0.5)",
-  lineColor: "rgba(232, 182, 79, ALPHA)",
-  density: 1.0,
 });
