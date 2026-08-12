@@ -295,6 +295,8 @@ h1, h2, h3, h4 {
 #hero-canvas {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   opacity: 0.85;
 }
@@ -424,8 +426,6 @@ h1, h2, h3, h4 {
 --------------------------------------------------------- */
 .skills-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
 }
 
 .bom-grid {
@@ -492,17 +492,18 @@ h1, h2, h3, h4 {
 
 .tl-dot {
   position: absolute;
-  top: 4px;
-  width: 14px; height: 14px;
+  top: -3px;
+  box-sizing: border-box;
+  width: 30px; height: 30px;
   border-radius: 50%;
-  background: var(--bg);
+  background: var(--bg) center / cover no-repeat;
   border: 2px solid var(--gold);
   box-shadow: 0 0 0 5px var(--bg), 0 0 14px 1px var(--gold-soft);
 }
-.tl-item:nth-child(odd) .tl-dot { right: -7px; }
-.tl-item:nth-child(even) .tl-dot { left: -7px; }
+.tl-item:nth-child(odd) .tl-dot { right: -15px; }
+.tl-item:nth-child(even) .tl-dot { left: -15px; }
 @media (max-width: 760px) {
-  .tl-item .tl-dot { left: 13px !important; right: auto !important; }
+  .tl-item .tl-dot { left: 5px !important; right: auto !important; }
 }
 
 .tl-date {
@@ -645,7 +646,7 @@ h1, h2, h3, h4 {
 /* ---------------------------------------------------------
    CAD / Engineering
 --------------------------------------------------------- */
-.cad-section { background: var(--bg-elevated); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.cad-section { background: var(--bg-elevated); }
 
 .cad-grid {
   display: grid;
@@ -793,7 +794,7 @@ h1, h2, h3, h4 {
    Contact
 --------------------------------------------------------- */
 .contact-section { position: relative; overflow: hidden; }
-#contact-canvas { position: absolute; inset: 0; z-index: 0; opacity: 0.7; }
+#contact-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.7; }
 
 .contact-inner { position: relative; z-index: 2; text-align: center; max-width: 720px; margin: 0 auto; }
 .contact-inner .section-title { margin: 0 auto 20px; }

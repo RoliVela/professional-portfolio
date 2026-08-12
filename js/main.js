@@ -135,6 +135,7 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
   const ctx = canvas.getContext("2d");
   let width, height, dpr;
   let nodes = [];
+  let pointer = null; // canvas-local {x, y} while hovering, else null
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -200,6 +201,28 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
       }
     }
 
+    // Plasma-ball effect: tendrils from nearby nodes to the cursor.
+    if (pointer) {
+      const reach = 160;
+      for (const n of nodes) {
+        const dx = n.x - pointer.x, dy = n.y - pointer.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < reach) {
+          const t = 1 - dist / reach;
+          ctx.strokeStyle = lineColor.replace("ALPHA", String(0.6 * t));
+          ctx.lineWidth = 1 + t;
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(pointer.x, pointer.y);
+          ctx.stroke();
+        }
+      }
+      ctx.fillStyle = nodeColor;
+      ctx.beginPath();
+      ctx.arc(pointer.x, pointer.y, 2.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
     ctx.fillStyle = nodeColor;
     for (const n of nodes) {
       ctx.beginPath();
@@ -217,6 +240,12 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(resize, 200);
   });
+
+  canvas.addEventListener("pointermove", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  });
+  canvas.addEventListener("pointerleave", () => { pointer = null; });
 }
 
 initFieldCanvas(document.getElementById("hero-canvas"), {
