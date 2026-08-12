@@ -149,8 +149,8 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
     nodes = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
+      vx: (Math.random() - 0.5) * 0.375,
+      vy: (Math.random() - 0.5) * 0.375,
       r: Math.random() * 1.8 + 0.8,
     }));
   }
@@ -241,11 +241,14 @@ function initFieldCanvas(canvas, { nodeColor, lineColor, density = 1 }) {
     resizeTimer = setTimeout(resize, 200);
   });
 
-  canvas.addEventListener("pointermove", (e) => {
+  // Listen on window (not the canvas) so the effect still tracks the cursor
+  // when it's over text/buttons stacked above the canvas.
+  window.addEventListener("pointermove", (e) => {
     const rect = canvas.getBoundingClientRect();
-    pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    pointer = (x >= 0 && x <= width && y >= 0 && y <= height) ? { x, y } : null;
   });
-  canvas.addEventListener("pointerleave", () => { pointer = null; });
+  document.addEventListener("pointerleave", () => { pointer = null; });
 }
 
 initFieldCanvas(document.getElementById("hero-canvas"), {
