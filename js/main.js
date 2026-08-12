@@ -256,3 +256,9 @@ initFieldCanvas(document.getElementById("bg-canvas"), {
   lineColor: "rgba(79, 214, 255, ALPHA)",
   density: 1.3,
 });
+
+initFieldCanvas(document.getElementById("hero-canvas"), {
+  nodeColor: "rgba(232, 182, 79, 0.6)",
+  lineColor: "rgba(79, 214, 255, ALPHA)",
+  density: 1.3,
+});

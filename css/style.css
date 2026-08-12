@@ -303,6 +303,17 @@ h1, h2, h3, h4 {
   -webkit-mask-image: linear-gradient(to right, black 0%, black 6%, transparent 35%, transparent 65%, black 94%, black 100%);
 }
 
+/* Full-width (no center fade), scrolls away with the hero content —
+   below the hero, only the fixed #bg-canvas (with its center fade) shows. */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.85;
+}
+
 .hero-inner {
   position: relative;
   z-index: 2;
