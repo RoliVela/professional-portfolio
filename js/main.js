@@ -274,6 +274,11 @@ const chatMessages = document.getElementById("chatMessages");
 const chatForm = document.getElementById("chatForm");
 const chatInput = document.getElementById("chatInput");
 
+// This site is also served statically from GitHub Pages, which can't run
+// the API function — always hit the Vercel deployment directly so the
+// chatbot works no matter which host serves the page.
+const CHAT_API_URL = "https://professional-portfolio-fawn-gamma.vercel.app/api/chat";
+
 if (chatbotToggle && chatWidget) {
   let greeted = false;
   let sending = false;
@@ -329,7 +334,7 @@ if (chatbotToggle && chatWidget) {
 
     let reply;
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch(CHAT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: history }),
