@@ -264,7 +264,8 @@ initFieldCanvas(document.getElementById("hero-canvas"), {
 });
 
 /* ---------------------------------------------------------
-   "AI" chatbot (gag feature — always replies "I don't know.")
+   "AI Roli" chatbot — answers questions about Roli using his
+   resume, via a Vercel function that calls the configured LLM.
 --------------------------------------------------------- */
 const chatbotToggle = document.getElementById("chatbotToggle");
 const chatWidget = document.getElementById("chatWidget");
@@ -275,6 +276,8 @@ const chatInput = document.getElementById("chatInput");
 
 if (chatbotToggle && chatWidget) {
   let greeted = false;
+  let sending = false;
+  const history = [];
 
   function addChatMessage(text, sender) {
     const el = document.createElement("div");
@@ -307,12 +310,16 @@ if (chatbotToggle && chatWidget) {
   });
   chatClose.addEventListener("click", closeChat);
 
-  chatForm.addEventListener("submit", (e) => {
+  chatForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (sending) return;
     const text = chatInput.value.trim();
     if (!text) return;
+
     addChatMessage(text, "user");
+    history.push({ role: "user", content: text });
     chatInput.value = "";
+    sending = true;
 
     const typingEl = document.createElement("div");
     typingEl.className = "chat-msg chat-msg-bot chat-typing";
@@ -320,9 +327,24 @@ if (chatbotToggle && chatWidget) {
     chatMessages.appendChild(typingEl);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    setTimeout(() => {
-      typingEl.remove();
-      addChatMessage("I don't know.", "bot");
-    }, 1100 + Math.random() * 700);
+    let reply;
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history }),
+      });
+      if (!res.ok) throw new Error(`status ${res.status}`);
+      const data = await res.json();
+      reply = data.reply || "I don't have a good answer for that — try asking something else about Roli.";
+    } catch (err) {
+      console.error("Chat request failed:", err);
+      reply = "Something went wrong reaching the AI just now — try again in a bit, or reach Roli directly through the contact form.";
+    }
+
+    typingEl.remove();
+    addChatMessage(reply, "bot");
+    history.push({ role: "assistant", content: reply });
+    sending = false;
   });
 }
